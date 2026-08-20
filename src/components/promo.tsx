@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Truck, Headset, BadgePercent } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const perks = [
   {

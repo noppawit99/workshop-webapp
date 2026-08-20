@@ -13,6 +13,7 @@ export default function CartButton({ product }: any) {
         productId: product.id,
         name: product.name,
         price: product.price,
+        qty: 1,
       });   
   }
 
