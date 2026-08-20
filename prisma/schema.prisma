@@ -7,16 +7,8 @@ datasource db {
   provider = "mysql"
 }
 
-enum OrderStatus {
-  delivered
-  received
-  processing
-
-  @@map("orders_status")
-}
-
 model category {
-  id       Int       @id @default(autoincrement())
+  id       Int       @id @unique(map: "id") @default(autoincrement())
   name     String?   @db.VarChar(255)
   products product[]
 
@@ -24,24 +16,24 @@ model category {
 }
 
 model product {
-  id          Int             @id @default(autoincrement())
-  name        String?         @db.VarChar(255)
-  description String?         @db.Text
+  id          Int            @id @unique(map: "id") @default(autoincrement())
+  name        String?        @db.VarChar(255)
+  description String?        @db.Text
   price       Float?
-  categoryId  Int?            @map("category_id")
-  category    category?       @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "products_ibfk_1")
-  images      productImage[]
+  categoryId  Int?           @map("category_id")
   orderItems  orderItem[]
+  images      productImage[]
+  category    category?      @relation(fields: [categoryId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "products_ibfk_1")
 
   @@index([categoryId], map: "category_id")
   @@map("products")
 }
 
 model productImage {
-  id        Int       @id @default(autoincrement())
+  id        Int       @id @unique(map: "id") @default(autoincrement())
   productId Int       @map("product_id")
   imageName String    @map("image_name") @db.Text
-  createdAt DateTime? @map("created_at") @default(now()) @db.Timestamp(0)
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamp(0)
   product   product   @relation(fields: [productId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "product_images_ibfk_1")
 
   @@index([productId], map: "product_id")
@@ -49,7 +41,7 @@ model productImage {
 }
 
 model customer {
-  id      Int     @id @default(autoincrement())
+  id      Int     @id @unique(map: "id") @default(autoincrement())
   name    String? @db.VarChar(255)
   address String? @db.VarChar(500)
   phone   String? @db.VarChar(20)
@@ -59,20 +51,20 @@ model customer {
 }
 
 model order {
-  id          Int          @id @default(autoincrement())
+  id          Int          @id @unique(map: "id") @default(autoincrement())
   date        DateTime?    @db.DateTime(0)
   customerId  Int?         @map("customer_id")
   status      OrderStatus?
   totalAmount Float?       @map("total_amount")
-  customer    customer?    @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orders_ibfk_1")
   items       orderItem[]
+  customer    customer?    @relation(fields: [customerId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "orders_ibfk_1")
 
   @@index([customerId], map: "customer_id")
   @@map("orders")
 }
 
 model orderItem {
-  id        Int     @id @default(autoincrement())
+  id        Int     @id @unique(map: "id") @default(autoincrement())
   orderId   Int     @map("order_id")
   productId Int     @map("product_id")
   quantity  Int
@@ -85,65 +77,10 @@ model orderItem {
   @@map("order_items")
 }
 
-model User {
-  id            String    @id
-  name          String    @db.Text
-  email         String
-  emailVerified Boolean   @default(false)
-  image         String?   @db.Text
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  sessions      Session[]
-  accounts      Account[]
+enum OrderStatus {
+  delivered
+  received
+  processing
 
-  @@unique([email])
-  @@map("user")
-}
-
-model Session {
-  id        String   @id
-  expiresAt DateTime
-  token     String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  ipAddress String?  @db.Text
-  userAgent String?  @db.Text
-  userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([token])
-  @@index([userId(length: 191)])
-  @@map("session")
-}
-
-model Account {
-  id                    String    @id
-  accountId             String    @db.Text
-  providerId            String    @db.Text
-  userId                String
-  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  accessToken           String?   @db.Text
-  refreshToken          String?   @db.Text
-  idToken               String?   @db.Text
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?   @db.Text
-  password              String?   @db.Text
-  createdAt             DateTime  @default(now())
-  updatedAt             DateTime  @updatedAt
-
-  @@index([userId(length: 191)])
-  @@map("account")
-}
-
-model Verification {
-  id         String   @id
-  identifier String   @db.Text
-  value      String   @db.Text
-  expiresAt  DateTime
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-
-  @@index([identifier(length: 191)])
-  @@map("verification")
+  @@map("orders_status")
 }
