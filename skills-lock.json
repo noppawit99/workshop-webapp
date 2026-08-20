@@ -11,7 +11,7 @@
       "source": "noppawit99/skill-ai-nt-2",
       "sourceType": "github",
       "skillPath": "skills/review-architecture-project/SKILL.md",
-      "computedHash": "2b48e6db3f99084c648a788722317ab5148742db4e16c2f7efc84ac9f77d62c2"
+      "computedHash": "503be2353c86539cb55df4ba4eaceb72012523f65b0cfef2f160d6ae05893837"
     },
     "vercel-react-best-practices": {
       "source": "vercel-labs/agent-skills",

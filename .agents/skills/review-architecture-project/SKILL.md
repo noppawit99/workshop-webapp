@@ -1,6 +1,9 @@
 ---
 name: review-architecture-project
 description: review overall project tech stack when user ark 'โปรเจคนี้ใช้ stack อะไร' or 'ช่วยรีวิวโปรเจคนี้'
+metadata:
+  author: max
+  version: "1.0.0"
 ---
 
 ## ขั้นตอนการรีวิวโปรเจค
