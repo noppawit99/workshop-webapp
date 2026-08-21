@@ -17,6 +17,7 @@ async function ApiVersion() {
 export default function AboutPage() {
   return (
     <main>
+        <h1 className="text-2xl font-bold mb-4">ยินดีต้อนรับ</h1>
       <Suspense fallback={ <AppLoading /> }>
         <ApiVersion />
       </Suspense>     
