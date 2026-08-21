@@ -1,11 +1,9 @@
 import "dotenv/config";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 import { PrismaClient } from "./generated/prisma/client";
-import mysql from "mysql2";
-
+// Use PrismaMariaDb adapter directly with the connection string – no external mysql2 pool needed
 const connectionString = process.env.DATABASE_URL || "";
-const pool = mysql.createPool(connectionString);
-const adapter = new PrismaMariaDb(pool);
+const adapter = new PrismaMariaDb(connectionString);
 const prisma = new PrismaClient({ adapter });
 
 async function updateProductImages() {

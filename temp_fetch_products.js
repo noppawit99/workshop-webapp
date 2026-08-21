@@ -1,4 +1,4 @@
-const prisma = require('./generated/prisma/client').default;
+import prisma from "../../generated/prisma/client";
 
 async function main() {
   try {
